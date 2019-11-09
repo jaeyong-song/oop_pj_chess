@@ -76,4 +76,7 @@ public abstract class Piece {
         return this.capture;
     }
 
+    //[FIXME] color comparison used many times.. so I added some codes...
+    public boolean isSameColor(Piece other) { return this.color.equals(other.getColor()); }
+
 }

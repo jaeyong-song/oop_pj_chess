@@ -10,7 +10,18 @@ public class Bishop extends Piece {
 
     @Override
     public boolean validateMove(Move move) {
-        // [TODO] fill this one...
+        // [FIXME] fill this one...
+        /* Bishop moves diagonally...
+         * && can move if there's no piece on the way
+         * && can move if there's a piece that can be captured by Bishop */
+        if(move.getCapturedPiece() == null // no piece on the way
+                || (move.getCapturedPiece() != null // there's a piece that can be captured (different color)
+                    && !move.getPiece().isSameColor(move.getCapturedPiece()))) {
+            // Bishop moves diagonally (file diff == rank diff)
+            if(move.getFileAbsDiff() == move.getRankAbsDiff()) {
+                return true;
+            }
+        }
         return false;
     }
 }

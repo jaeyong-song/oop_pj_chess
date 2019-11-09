@@ -63,4 +63,18 @@ public class Move {
         return destinationRank;
     }
 
+    // [FIXME] additional function which used frequently
+    public int getFileAbsDiff() {
+        return Math.abs(getDestinationFile() - getOriginFile());
+    }
+    public int getRankAbsDiff() {
+        return Math.abs(getDestinationRank() - getOriginRank());
+    }
+    public int getFileDiff() {
+        return getDestinationFile() - getOriginFile();
+    }
+    public int getRankDiff() {
+        return getDestinationRank() - getOriginRank();
+    }
+
 }

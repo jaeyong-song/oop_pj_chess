@@ -111,7 +111,7 @@ public class BoardPanel extends JPanel implements Observer {
 
     private void initializePieces() {
         /*
-        TODO-piece
+        [FIXME]-piece
             Initialize pieces on board
             Check following code to implement other pieces
             Highly recommended to use same template!
