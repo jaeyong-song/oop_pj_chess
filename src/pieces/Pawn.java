@@ -10,7 +10,7 @@ public class Pawn extends Piece {
 
     @Override
     public boolean validateMove(Move move) {
-        // [TODO] fill this one...
+        // [FIXME] fill this one...
         /* Pawns have many cases for move
         * 1. first move: moves one/two ranks, cannot capture
         * 2. move forward: cannot capture

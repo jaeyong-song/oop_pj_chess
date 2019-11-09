@@ -18,7 +18,7 @@ public class Knight extends Piece {
                 || (move.getCapturedPiece() != null // there's a piece that can be captured (different color)
                 && !move.getPiece().isSameColor(move.getCapturedPiece()))) {
             // Knight moves 2 levels for one side and diagonally one level...
-            // it means that fileDiff*rankDiff == 2
+            // it means that fileAbsDiff*rankAbsDiff == 2
             if(move.getFileAbsDiff()*move.getRankAbsDiff() == 2) {
                 return true;
             }

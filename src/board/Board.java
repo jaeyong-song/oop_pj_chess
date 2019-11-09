@@ -64,7 +64,7 @@ public class Board {
          */
 
         /* This codes initialize pieces in Board Class */
-        /* pawns o, rooks o, knights o, bishops x, queens x, kings o
+        /* pawns o, rooks o, knights o, bishops o, queens o, kings o
          * */
 
         // Queens
