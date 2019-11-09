@@ -98,16 +98,18 @@ public class MoveValidator {
             // direction finding
             int fileToward = move.getFileDiff() > 0 ? 1 : -1;
             int rankToward = move.getRankDiff() > 0 ? 1 : -1;
+
             int destFile = move.getDestinationFile();
             int destRank = move.getDestinationRank();
 
             int i = move.getOriginFile() + fileToward;
-            int j = move.getDestinationRank() + rankToward;
+            int j = move.getOriginRank() + rankToward;
 
             // while get to the destination
             while(i != destFile && j != destRank) {
                 // if there's some pieces on the way of path -> return false
                 if(Board.getSquare((char)i, j).getCurrentPiece() != null) {
+                    System.out.println("diag");
                     return false;
                 }
                 i += fileToward; j += rankToward;
