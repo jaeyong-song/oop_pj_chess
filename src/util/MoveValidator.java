@@ -63,13 +63,34 @@ public class MoveValidator {
     }
 
     public static boolean isCheckMove(Move move) {
-        // TODO-check
-        return false;
+        // [TODO]-check
+        /* check if after this move
+        * this piece can capture King or not */
+        // move: origin -> dest
+        // check: dest -> King is valid?? use validateMove method
+        // +a) [FIXME] there can be cases that movement of piece can trigger other piece to make check
+        int newOriginFile = move.getDestinationFile();
+        int newOriginRank = move.getDestinationRank();
+        return validateMove(new Move(move.getPiece(), (char)newOriginFile, newOriginRank,
+                PieceSet.getOpponentKingFile(move.getPiece().getColor()), PieceSet.getOpponentKingRank(move.getPiece().getColor())), true);
     }
 
     public static boolean isCheckMate(Move move) {
         // TODO-check
+        /* firstly, this move must be check(but already checked in usage)
+        * execute temporary movement and check if check can be overcome by one move of a piece
+        * 1. find all pieces that make check (called frequently => private Method)
+        * 2. find if movement of one piece can make getAllCheckMaker().size() == 0
+        *   => == 0 : return false(no checkmate) / != 0: return true(checkmate);
+        *   => HOW: one movement on the ways of check pieces or
+        *           capturing check pieces can make getAllCheckMaker().size() == 0*/
+
         return false;
+    }
+
+    private static List<Piece> getAllCheckMaker() {
+        // [TODO] make private method used for isCheckMate(Move move)
+        return null;
     }
 
     /* origin-destination position was checked by validateMove
@@ -109,7 +130,6 @@ public class MoveValidator {
             while(i != destFile && j != destRank) {
                 // if there's some pieces on the way of path -> return false
                 if(Board.getSquare((char)i, j).getCurrentPiece() != null) {
-                    System.out.println("diag");
                     return false;
                 }
                 i += fileToward; j += rankToward;
