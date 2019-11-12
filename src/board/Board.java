@@ -47,6 +47,28 @@ public class Board {
         originSquare.setCurrentPiece(null);
     }
 
+    public static void undoMove(Move move) {
+        //[FIXME] I added this code to implement undo and to undo temporary movement
+        /* This method undo move
+        * It used for two purposes: 1. undo after temporary movement, 2. to implement undo function*/
+
+        Square originSquare = getSquare(move.getDestinationFile(), move.getDestinationRank());
+        Square destSquare = getSquare(move.getOriginFile(), move.getOriginRank());
+
+        // there's no cases that destSquare if filled with other piece because this movement
+        // originally comes from the destSquare...
+        // but, if movement captured some piece at movement... captured piece should be recovered...
+        // It can be easily recovered because PieceSet.capturedPieceSet is Stack<Piece>
+
+        destSquare.setCurrentPiece(originSquare.getCurrentPiece());
+        // use PieceSet.recoverCapturedPiece() Method...
+        if(move.getCapturedPiece() != null) {
+            Piece.Color clr = move.getPiece().getColor();
+            Piece recoveredPiece = PieceSet.recoverCapturedPiece(clr);
+            originSquare.setCurrentPiece(recoveredPiece);
+        }
+    }
+
     private static void initializeSquares() {
         for (int i = 0; i < DIMENSION; i++) {
             for (int j = 0; j < DIMENSION; j++) {

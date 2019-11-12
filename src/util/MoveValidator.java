@@ -69,9 +69,20 @@ public class MoveValidator {
         // move: origin -> dest
         // check: dest -> King is valid?? use validateMove method
         // +a) [FIXME] there can be cases that movement of piece can trigger other piece to make check
+        // 1. this move makes other piece to make check
+        // 2. this move makes this piece to make check
+
+        // 1. this move makes other piece to make check
+        boolean isMakeOtherCheck = false;
+
+
+        // 2. this move makes this piece to make check
         int newOriginFile = move.getDestinationFile();
         int newOriginRank = move.getDestinationRank();
-        return validateMove(new Move(move.getPiece(), (char)newOriginFile, newOriginRank,
+
+
+        return isMakeOtherCheck
+                || validateMove(new Move(move.getPiece(), (char)newOriginFile, newOriginRank,
                 PieceSet.getOpponentKingFile(move.getPiece().getColor()), PieceSet.getOpponentKingRank(move.getPiece().getColor())), true);
     }
 
@@ -97,6 +108,7 @@ public class MoveValidator {
     * so, by validateClearPath Method we should check if it is clear path to go dest*/
     private static boolean validateClearPath(Move move) {
         // [FIXME]-movement
+        //[ERROR] I found a case that Queen can go over pawn... [FIXME]
 
         /* There's a lot of cases for path
         * 1. one level move: already checked -> return true

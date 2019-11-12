@@ -47,6 +47,14 @@ public class PieceSet {
         capturedPieceSet.get(piece.getColor()).push(piece);
     }
 
+    public static Piece recoverCapturedPiece(Piece.Color color) {
+        /*[FIXME] I added this code to recover captured piece...
+        *   used for Board.undoMove()*/
+        Piece piece = capturedPieceSet.get(color).pop();
+        piece.setCapture(false);
+        return piece;
+    }
+
     public static List<Piece> getCapturedPieces(Piece.Color color) {
         return capturedPieceSet.get(color);
     }
