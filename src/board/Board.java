@@ -1,5 +1,6 @@
 package board;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import pieces.*;
 import util.Core;
 import util.Move;
@@ -50,7 +51,7 @@ public class Board {
     public static void undoMove(Move move) {
         //[FIXME] I added this code to implement undo and to undo temporary movement
         /* This method undo move
-        * It used for two purposes: 1. undo after temporary movement, 2. to implement undo function*/
+        * to implement undo function*/
 
         Square originSquare = getSquare(move.getDestinationFile(), move.getDestinationRank());
         Square destSquare = getSquare(move.getOriginFile(), move.getOriginRank());
@@ -59,13 +60,13 @@ public class Board {
         // originally comes from the destSquare...
         // but, if movement captured some piece at movement... captured piece should be recovered...
         // It can be easily recovered because PieceSet.capturedPieceSet is Stack<Piece>
-
         destSquare.setCurrentPiece(originSquare.getCurrentPiece());
         // use PieceSet.recoverCapturedPiece() Method...
         if(move.getCapturedPiece() != null) {
-            Piece.Color clr = move.getPiece().getColor();
-            Piece recoveredPiece = PieceSet.recoverCapturedPiece(clr);
+            Piece recoveredPiece = PieceSet.recoverCapturedPiece(move.getCapturedPiece().getColor());
             originSquare.setCurrentPiece(recoveredPiece);
+        } else {
+            originSquare.setCurrentPiece(null); // if no piece has been captured -> null
         }
     }
 

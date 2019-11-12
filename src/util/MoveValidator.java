@@ -1,9 +1,11 @@
 package util;
 
 import board.Board;
+import board.Square;
 import pieces.Piece;
 import pieces.PieceSet;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class MoveValidator {
@@ -66,24 +68,16 @@ public class MoveValidator {
         // [TODO]-check
         /* check if after this move
         * this piece can capture King or not */
-        // move: origin -> dest
-        // check: dest -> King is valid?? use validateMove method
         // +a) [FIXME] there can be cases that movement of piece can trigger other piece to make check
         // 1. this move makes other piece to make check
         // 2. this move makes this piece to make check
 
-        // 1. this move makes other piece to make check
-        boolean isMakeOtherCheck = false;
-
-
-        // 2. this move makes this piece to make check
-        int newOriginFile = move.getDestinationFile();
-        int newOriginRank = move.getDestinationRank();
-
-
-        return isMakeOtherCheck
-                || validateMove(new Move(move.getPiece(), (char)newOriginFile, newOriginRank,
-                PieceSet.getOpponentKingFile(move.getPiece().getColor()), PieceSet.getOpponentKingRank(move.getPiece().getColor())), true);
+        int checkMakerNum = getAllCheckMaker().size();
+        if(checkMakerNum >= 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static boolean isCheckMate(Move move) {
@@ -95,20 +89,35 @@ public class MoveValidator {
         *   => == 0 : return false(no checkmate) / != 0: return true(checkmate);
         *   => HOW: one movement on the ways of check pieces or
         *           capturing check pieces can make getAllCheckMaker().size() == 0*/
-
         return false;
     }
 
-    private static List<Piece> getAllCheckMaker() {
-        // [TODO] make private method used for isCheckMate(Move move)
-        return null;
+    private static List<Square> getAllCheckMaker() {
+        // [FIXME] make private method used for isCheckMate(Move move)
+        // find all checkMakers by iteration of all pieces on the board
+        // move: origin -> dest
+        // check: dest -> King is valid?? use validateMove method
+        List<Square> checkMakers = new LinkedList<Square>();
+        for(int i = 1; i <= 8; i++) {
+            for(char j = 'a'; j < 'h'; j++) {
+                Square sqr = Board.getSquare(j, i);
+                Piece p = sqr.getCurrentPiece();
+                if(p != null) {
+                    if(validateMove(new Move(p, j, i, PieceSet.getOpponentKingFile(p.getColor()),
+                            PieceSet.getOpponentKingRank(p.getColor())), true)) {
+                        checkMakers.add(sqr);
+                    }
+                }
+            }
+        }
+        return checkMakers;
     }
 
     /* origin-destination position was checked by validateMove
     * so, by validateClearPath Method we should check if it is clear path to go dest*/
     private static boolean validateClearPath(Move move) {
         // [FIXME]-movement
-        //[ERROR] I found a case that Queen can go over pawn... [FIXME]
+        //[FIXED] I found a case that Queen can go over pawn...
 
         /* There's a lot of cases for path
         * 1. one level move: already checked -> return true
@@ -117,7 +126,7 @@ public class MoveValidator {
         * 4. along file/rank: no other pieces except dest -> return true else false */
 
         // 1. one level move
-        if(move.getFileAbsDiff()*move.getRankAbsDiff() <= 1) {
+        if(move.getFileAbsDiff() == 1 && move.getRankAbsDiff() == 1) {
             return true;
         }
 
