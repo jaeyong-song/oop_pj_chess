@@ -161,7 +161,7 @@ public class MoveValidator {
         * 4. along file/rank: no other pieces except dest -> return true else false */
 
         // 1. one level move
-        if(move.getFileAbsDiff() == 1 && move.getRankAbsDiff() == 1) {
+        if(move.getFileAbsDiff() == 1 || move.getRankAbsDiff() == 1) {
             return true;
         }
 

@@ -1,8 +1,6 @@
 package board;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import pieces.*;
-import util.Core;
 import util.Move;
 
 import java.util.Iterator;
