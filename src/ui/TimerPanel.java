@@ -46,6 +46,8 @@ public class TimerPanel extends JPanel implements Observer {
             Show whiteTimerStatusPanel
             Blind blackTimerStatusPanel
          */
+        /* In GameModel.initializeTimers(), it calls this method every 1 sec
+        * */
     }
 
     public void blackTimerTikTok() {
