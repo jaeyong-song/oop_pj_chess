@@ -7,6 +7,7 @@ import java.awt.*;
 import java.sql.Time;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
 
 public class TimerPanel extends JPanel implements Observer {
 
@@ -48,10 +49,22 @@ public class TimerPanel extends JPanel implements Observer {
          */
         /* In GameModel.initializeTimers(), it calls this method every 1 sec
         * */
+        proceedTime(whiteTime);
+        whiteTimerDigitsLabel.setText(whiteTime.toString());
+        whiteTimerStatusPanel.setVisible(true);
+        blackTimerStatusPanel.setVisible(false);
     }
 
     public void blackTimerTikTok() {
         // TODO-timer: same with whiteTimerTikTok
+        proceedTime(blackTime);
+        blackTimerDigitsLabel.setText(blackTime.toString());
+        blackTimerStatusPanel.setVisible(true);
+        whiteTimerStatusPanel.setVisible(false);
+    }
+
+    private void proceedTime(Time t) {
+        t.setTime(t.getTime() + 1000);
     }
 
     private void initialize() {

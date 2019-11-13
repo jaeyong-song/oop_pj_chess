@@ -65,7 +65,7 @@ public class MoveValidator {
         // +a) there can be cases that movement of piece can trigger other piece to make check
         // 1. this move makes other piece to make check
         // 2. this move makes this piece to make check
-
+        //[TODO] whiteKingFile / whiteKingRank / blackKingFile / blackKingRank should be updated!!!!
         return getAllCheckMakers().size() >= 1 ? true : false;
     }
 
@@ -114,8 +114,19 @@ public class MoveValidator {
         }
 
         // 2. if getAllcheckMakers().size() == 1
+        Piece.Color opponentColor = mkrClr == Piece.Color.BLACK ? Piece.Color.WHITE : Piece.Color.BLACK;
         if(checkMakers.size() == 1) {
-
+            Square checkMaker = checkMakers.get(0);
+            for(int i = 1; i <= 8; i++) {
+                for(char j = 'a'; j <= 'h'; j++) {
+                    Square sqr = Board.getSquare(j, i);
+                    Piece p = sqr.getCurrentPiece();
+                    if(p != null) {
+//                        if(validateMove(new Move(p, j, i, checkMaker.getCurrentPiece())));
+                        //[TODO] implement this!
+                    }
+                }
+            }
         }
 
         // 3. if getAllcheckMakers.size() >= 2
@@ -134,7 +145,7 @@ public class MoveValidator {
         // check: dest -> King is valid?? use validateMove method
         List<Square> checkMakers = new LinkedList<Square>();
         for(int i = 1; i <= 8; i++) {
-            for(char j = 'a'; j < 'h'; j++) {
+            for(char j = 'a'; j <= 'h'; j++) {
                 Square sqr = Board.getSquare(j, i);
                 Piece p = sqr.getCurrentPiece();
                 if(p != null) {

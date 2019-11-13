@@ -4,6 +4,8 @@ import pieces.*;
 import util.Move;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Board {
 
@@ -34,6 +36,21 @@ public class Board {
             return grid[file - 'a'][rank - 1];
         }
     }
+
+    /*[FIXME] I add this method to get squares by color
+    *   delete this if it does not use*/
+//    public static List<Square> getSquares(Piece.Color clr) {
+//        List<Square> pieces = new LinkedList<Square>();
+//        for(int i = 0; i < DIMENSION; i++) {
+//            for(int j = 0; j <DIMENSION; j++) {
+//                Square sqr = grid[i][j];
+//                if(sqr.getCurrentPiece().getColor() == clr) {
+//                    pieces.add(sqr);
+//                }
+//            }
+//        }
+//        return pieces;
+//    }
 
     public static void executeMove(Move move) {
         Square originSquare = getSquare(move.getOriginFile(), move.getOriginRank());
