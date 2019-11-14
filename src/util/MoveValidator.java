@@ -1,6 +1,7 @@
 package util;
 
 import board.Board;
+import board.Pair;
 import board.Square;
 import pieces.Piece;
 import pieces.PieceSet;
@@ -87,13 +88,13 @@ public class MoveValidator {
         *         one movement of some piece can block that intersection Squares
         * 4. all other cases => checkMate*/
 
-        List<Square> checkMakers = getAllCheckMakers();
-        Piece.Color mkrClr = checkMakers.get(0).getCurrentPiece().getColor();
-        char kingFile = PieceSet.getOpponentKingFile(mkrClr);
-        int kingRank = PieceSet.getOpponentKingRank(mkrClr);
+        List<Pair> checkMakers = getAllCheckMakers();
+        Piece.Color mkrClr = Board.getSquare(checkMakers.get(0).getFile(), checkMakers.get(0).getRank()).getCurrentPiece().getColor();
 
         // 1. check if movement of king can overcome check
         // there's 8 ways for king's move
+        char kingFile = PieceSet.getOpponentKingFile(mkrClr);
+        int kingRank = PieceSet.getOpponentKingRank(mkrClr);
         for(int i = -1; i <= 1; i++) {
             for(int j = -1; j <= 1; j++) {
                 // no movement or out of range
@@ -116,14 +117,27 @@ public class MoveValidator {
         // 2. if getAllcheckMakers().size() == 1
         Piece.Color opponentColor = mkrClr == Piece.Color.BLACK ? Piece.Color.WHITE : Piece.Color.BLACK;
         if(checkMakers.size() == 1) {
-            Square checkMaker = checkMakers.get(0);
+            Pair checkMaker = checkMakers.get(0);
+            Square checkMakerSqr = Board.getSquare(checkMaker.getFile(), checkMaker.getRank());
+            Piece piece = checkMakerSqr.getCurrentPiece();
+            Pair opponentKing = PieceSet.getOpponentKingPosition(piece.getColor());
+            List<Pair> pathPairs = getPathPairs(Board.getSquare(checkMaker.getFile(), checkMaker.getRank()).getCurrentPiece(),
+                                                checkMaker.getFile(), checkMaker.getRank(), opponentKing.getFile(), opponentKing.getRank());
             for(int i = 1; i <= 8; i++) {
                 for(char j = 'a'; j <= 'h'; j++) {
                     Square sqr = Board.getSquare(j, i);
-                    Piece p = sqr.getCurrentPiece();
-                    if(p != null) {
-//                        if(validateMove(new Move(p, j, i, checkMaker.getCurrentPiece())));
-                        //[TODO] implement this!
+                    Piece tmpP = sqr.getCurrentPiece();
+                    if(tmpP != null) {
+                        // 1) check if maker can be captured
+                        if(validateMove(new Move(tmpP, j, i, checkMaker.getFile(), checkMaker.getRank()))) {
+                            return false;
+                        }
+                        // 2) can move on the way of path
+                        for(Pair p: pathPairs) {
+                            if(validateMove(new Move(tmpP, j, i, p.getFile(), p.getRank()))) {
+                                return false;
+                            }
+                        }
                     }
                 }
             }
@@ -138,12 +152,29 @@ public class MoveValidator {
         return true;
     }
 
-    private static List<Square> getAllCheckMakers() {
+    // [FIXME] return pairs on my path
+    private static List<Pair> getPathPairs(Piece p, char originFile, int originRank, char destFile, int destRank) {
+        List<Pair> list = new LinkedList<Pair>();
+        // Knight go over other pieces
+        if(p.getType().equals(Piece.Type.KNIGHT)) {
+            return list;
+        }
+        int fileAdvance = Integer.signum(destFile - originFile);
+        int rankAdvance = Integer.signum(destRank - originRank);
+        System.out.println(fileAdvance+rankAdvance);
+        for(int file = originFile + fileAdvance, rank = originRank + rankAdvance;
+            file != destFile || rank != destRank; file += fileAdvance, rank += rankAdvance) {
+            list.add(new Pair((char)file, rank));
+        }
+        return list;
+    }
+
+    private static List<Pair> getAllCheckMakers() {
         // [FIXME] make private method used for isCheckMate(Move move)
         // find all checkMakers by iteration of all pieces on the board
         // move: origin -> dest
         // check: dest -> King is valid?? use validateMove method
-        List<Square> checkMakers = new LinkedList<Square>();
+        List<Pair> checkMakers = new LinkedList<Pair>();
         for(int i = 1; i <= 8; i++) {
             for(char j = 'a'; j <= 'h'; j++) {
                 Square sqr = Board.getSquare(j, i);
@@ -151,7 +182,7 @@ public class MoveValidator {
                 if(p != null) {
                     if(validateMove(new Move(p, j, i, PieceSet.getOpponentKingFile(p.getColor()),
                             PieceSet.getOpponentKingRank(p.getColor())), true)) {
-                        checkMakers.add(sqr);
+                        checkMakers.add(new Pair(j, i));
                     }
                 }
             }

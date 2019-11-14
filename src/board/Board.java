@@ -61,6 +61,12 @@ public class Board {
         }
         destinationSquare.setCurrentPiece(originSquare.getCurrentPiece());
         originSquare.setCurrentPiece(null);
+
+        // [FIXME] King's position must be updated
+        Pair pair = PieceSet.getKingPosition(move.getPiece().getColor());
+        if(move.getOriginFile() == pair.getFile() && move.getOriginRank() == pair.getRank()) {
+            PieceSet.updateKingPosition(move.getPiece().getColor(), move.getDestinationFile(), move.getDestinationRank());
+        }
     }
 
     public static void undoMove(Move move) {
@@ -82,6 +88,11 @@ public class Board {
             originSquare.setCurrentPiece(recoveredPiece);
         } else {
             originSquare.setCurrentPiece(null); // if no piece has been captured -> null
+        }
+        // [FIXME] King's position must be updated
+        Pair pair = PieceSet.getKingPosition(move.getPiece().getColor());
+        if(move.getDestinationFile() == pair.getFile() && move.getDestinationRank() == pair.getRank()) {
+            PieceSet.updateKingPosition(move.getPiece().getColor(), move.getOriginFile(), move.getOriginRank());
         }
     }
 

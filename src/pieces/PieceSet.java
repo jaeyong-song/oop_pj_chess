@@ -1,5 +1,7 @@
 package pieces;
 
+import board.Pair;
+
 import java.util.*;
 
 public class PieceSet {
@@ -7,6 +9,7 @@ public class PieceSet {
     private static Map<Piece.Color, Map<Piece.Type, List<Piece>>> pieceSet = null;
     private static Map<Piece.Color, Stack<Piece>> capturedPieceSet;
 
+    //[FIXME] king's position must be updated!!
     private static char whiteKingFile;
     private static int whiteKingRank;
     private static char blackKingFile;
@@ -26,6 +29,34 @@ public class PieceSet {
         initializePieceSet();
         initializeCapturedPieceSet();
         initializeKingsCoordinates();
+    }
+
+    // [FIXME] I added this to get Kings position of my side
+    public static Pair getKingPosition(Piece.Color clr) {
+        if(clr.equals(Piece.Color.WHITE)) {
+            return new Pair(whiteKingFile, whiteKingRank);
+        } else {
+            return new Pair(blackKingFile, blackKingRank);
+        }
+    }
+
+    public static Pair getOpponentKingPosition(Piece.Color clr) {
+        if(clr.equals(Piece.Color.BLACK)) {
+            return new Pair(whiteKingFile, whiteKingRank);
+        } else {
+            return new Pair(blackKingFile, blackKingRank);
+        }
+    }
+
+    //[FIXME] I added this to update Kings position of my side
+    public static void updateKingPosition(Piece.Color clr, char destFile, int destRank) {
+        if(clr.equals(Piece.Color.WHITE)) {
+            whiteKingFile = destFile;
+            whiteKingRank = destRank;
+        } else {
+            blackKingFile = destFile;
+            blackKingRank = destRank;
+        }
     }
 
     public static List<Piece> getPieces(Piece.Color color) {
