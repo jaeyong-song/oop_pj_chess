@@ -41,7 +41,7 @@ public class TimerPanel extends JPanel implements Observer {
 
     public void whiteTimerTikTok() {
         /*
-        TODO-timer
+        [FIXME]-timer
             Update whiteTime
             Update whiteDigitsLabel
             Show whiteTimerStatusPanel
@@ -56,7 +56,7 @@ public class TimerPanel extends JPanel implements Observer {
     }
 
     public void blackTimerTikTok() {
-        // TODO-timer: same with whiteTimerTikTok
+        // [FIXME]-timer: same with whiteTimerTikTok
         proceedTime(blackTime);
         blackTimerDigitsLabel.setText(blackTime.toString());
         blackTimerStatusPanel.setVisible(true);
@@ -65,6 +65,25 @@ public class TimerPanel extends JPanel implements Observer {
 
     private void proceedTime(Time t) {
         t.setTime(t.getTime() + 1000);
+    }
+
+
+
+    //[TODO] - countdown
+    private void countdown(Time t) {t.setTime(t.getTime()-1000);}
+
+    public void whiteTimerDown() {
+        countdown(whiteTime);
+        whiteTimerDigitsLabel.setText(whiteTime.toString());
+        whiteTimerStatusPanel.setVisible(true);
+        blackTimerStatusPanel.setVisible(false);
+    }
+
+    public void blackTimerDown() {
+        countdown(blackTime);
+        blackTimerDigitsLabel.setText(blackTime.toString());
+        blackTimerStatusPanel.setVisible(true);
+        whiteTimerStatusPanel.setVisible(false);
     }
 
     private void initialize() {

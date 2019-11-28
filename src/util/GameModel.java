@@ -25,6 +25,7 @@ public class GameModel extends Observable {
     }
 
     private void initialize() {
+
         initializeTimers();
         initializeUIComponents();
     }
@@ -47,6 +48,7 @@ public class GameModel extends Observable {
         Board.executeMove(move);
         moveHistoryPanel.printMove(move);
         boardPanel.executeMove(move);
+
         switchTimer(move);
         if (MoveValidator.isCheckMove(move)) {
             if (MoveValidator.isCheckMate(move)) {
@@ -85,15 +87,57 @@ public class GameModel extends Observable {
         });
     }
 
-    private void switchTimer(Move move) {
-        /*
-        TODO-timer
-            start and stop whiteTimer and blackTimer
-         */
+    private void initializecountdownTimers() {
+        //TODO
+        whiteTimer = new Timer( 1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timerPanel.whiteTimerDown();
+            }
+        });
+        blackTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timerPanel.blackTimerDown();
+            }
+        });
     }
 
+    private void switchTimer(Move move) {
+        /*
+        [FIXME] 각자 차례가 되면 다른 색깔 TIMER를 STOP하고 TIMER를 START한다.
+         */
+        if (move.getPiece().getColor() == Piece.Color.WHITE) {
+            this.whiteTimer.stop();
+            this.blackTimer.start();
+        }
+        else {
+            this.whiteTimer.start();
+            this.blackTimer.stop();
+        }
+    }
+
+    private void switchcountdownTimer(Move move) {
+        /*
+        [TODO] 각자 차례가 되면 다른 색깔 TIMER를 STOP하고 TIMER를 START한다.
+         */
+        if (move.getPiece().getColor() == Piece.Color.WHITE) {
+            this.whiteTimer.stop();
+            this.blackTimer.start();
+        }
+        else {
+            this.whiteTimer.start();
+            this.blackTimer.stop();
+        }
+    }
+
+
+
     private void stopTimer() {
-        // TODO-timer: stop timers
+        // [FIXME] 두가지 타이머 다 STOP
+        this.whiteTimer.stop();
+        this.blackTimer.stop();
+
     }
 
     public BoardPanel getBoardPanel() {
