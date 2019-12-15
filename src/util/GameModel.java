@@ -35,7 +35,7 @@ public class GameModel extends Observable {
         initialize();
     }
 
-
+//[FIXME]
     private void initialize() {
         switch(Core.getPreferences().getTimerMode()) {
             case COUNTDOWN:
@@ -65,7 +65,7 @@ public class GameModel extends Observable {
         }
     }
 
-    private void executeMove(Move move) {
+    public void executeMove(Move move) {
         MoveLogger.addMove(move);
         Board.executeMove(move);
         moveHistoryPanel.printMove(move);
@@ -112,9 +112,7 @@ public class GameModel extends Observable {
     }
 
     private void initializecountdownTimers() {
-        //TODO
-
-
+        //[FIXME]
 
         whiteTimer = new Timer( 1000, new ActionListener() {
             @Override
@@ -133,7 +131,7 @@ public class GameModel extends Observable {
 
     private void switchTimer(Move move) {
         /*
-        [TODO] 각자 차례가 되면 다른 색깔 TIMER를 STOP하고 TIMER를 START한다. countdown인 경우 수정해줘야 한다.
+        [FIXME] 각자 차례가 되면 다른 색깔 TIMER를 STOP하고 TIMER를 START한다. countdown인 경우 수정해줘야 한다.
          */
         if (move.getPiece().getColor() == Piece.Color.WHITE) {
 
@@ -162,6 +160,7 @@ public class GameModel extends Observable {
         try {
             File soundFile = new File(file);
             final Clip clip = AudioSystem.getClip();
+
             clip.addLineListener(new LineListener()
             {
                 @Override

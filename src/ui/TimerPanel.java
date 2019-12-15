@@ -67,11 +67,11 @@ public class TimerPanel extends JPanel implements Observer {
         t.setTime(t.getTime() + 1000);
     }
 
-    //[TODO] - countdown
+    //[FIXME] - countdown
     private void countdown(Time t) {t.setTime(t.getTime()-1000);}
 
 
-
+//[FIXME]
     public void whiteTimerDown() {
         countdown(whiteTime);
         whiteTimerDigitsLabel.setText(whiteTime.toString());

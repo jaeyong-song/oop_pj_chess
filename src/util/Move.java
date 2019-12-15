@@ -3,14 +3,16 @@ package util;
 import board.Board;
 import pieces.Piece;
 
-public class Move {
+import java.io.Serializable;
+
+public class Move implements Serializable {
 
     private Piece piece;
     private Piece capturedPiece;
     private char originFile;
     private int originRank;
-    private char destinationFile;
-    private int destinationRank;
+    public char destinationFile;
+    public int destinationRank;
 
     public Move(char originFile, int originRank, char destinationFile, int destinationRank) {
         this.piece = Board.getSquare(originFile, originRank).getCurrentPiece();
@@ -58,6 +60,11 @@ public class Move {
     public char getDestinationFile() {
         return destinationFile;
     }
+
+    //[TODO]
+    public void setDestinationFile(Move move){this.destinationFile = move.destinationFile;}
+
+    public void setDestinationRank(Move move){this.destinationRank = move.destinationRank;}
 
     public int getDestinationRank() {
         return destinationRank;

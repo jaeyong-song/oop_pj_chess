@@ -59,6 +59,7 @@ public class MoveValidator {
         return true;
     }
 
+
     public static boolean isCheckMove(Move move) {
         // [FIXME]-check
         /* check if after this move
@@ -69,6 +70,7 @@ public class MoveValidator {
         //[TODO] whiteKingFile / whiteKingRank / blackKingFile / blackKingRank should be updated!!!!
         return getAllCheckMakers().size() >= 1 ? true : false;
     }
+
 
     public static boolean isCheckMate(Move move) {
         // TODO-check

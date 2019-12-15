@@ -2,10 +2,12 @@ package pieces;
 
 import util.Move;
 
+import java.io.Serializable;
+
 /**
  * Abstract class for chess piece.
  */
-public abstract class Piece {
+public abstract class Piece implements Serializable {
 
     public enum Color {
         WHITE, BLACK
