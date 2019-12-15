@@ -1,5 +1,6 @@
 package ui;
 
+import board.Board;
 import util.Core;
 import util.GameModel;
 import util.Move;
@@ -54,6 +55,7 @@ public class ControlPanel extends JPanel implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Move> loadmovelist = lastmovein();
+
                 for (int i = 0; i < loadmovelist.size(); i++) {
                     gameModel.executeMove(loadmovelist.get(i));
 

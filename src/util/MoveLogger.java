@@ -59,16 +59,7 @@ public class MoveLogger {
 
     //[FIXME] save
     public static void saveLastMove(Move move){
-        for(int i=0 ; i <lastmove.size(); i++) {
-            if(move.getPiece() == lastmove.get(i).getPiece()) {
-                //나중에 execute move를 해주는 걸 고려해서 Destination만 update해줬습니다.
-                Move kkmove = new Move(lastmove.get(i).getPiece(), lastmove.get(i).getCapturedPiece(),
-                        lastmove.get(i).getOriginFile(), lastmove.get(i).getOriginRank(),
-                        move.getDestinationFile(), move.getDestinationRank());
-                lastmove.set(i, kkmove);
-                break;
-            }
-        }
+
         lastmove.add(move);
     }
 
