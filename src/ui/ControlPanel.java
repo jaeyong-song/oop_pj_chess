@@ -54,7 +54,14 @@ public class ControlPanel extends JPanel implements Observer {
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                /*undo해서 처음 상태로 돌린 다음에 하면 될거 같다..
+                for( int i = 0; i < MoveLogger.lastmove.size() ; i++) {
+                    Board.undoMove(MoveLogger.lastmove.get(MoveLogger.lastmove.size()-i-1));
+                    MoveLogger.lastmove.remove(MoveLogger.lastmove.size()-i-1);
+                }*/
                 ArrayList<Move> loadmovelist = lastmovein();
+
 
                 for (int i = 0; i < loadmovelist.size(); i++) {
                     gameModel.executeMove(loadmovelist.get(i));
