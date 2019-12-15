@@ -12,8 +12,8 @@ import java.util.Timer;
 public class TimerPanel extends JPanel implements Observer {
 
     private GameModel gameModel;
-    private Time whiteTime;
-    private Time blackTime;
+    public Time whiteTime;
+    public Time blackTime;
 
     private JPanel displayPanel;
     private JPanel whiteTimerPanel;
@@ -67,10 +67,10 @@ public class TimerPanel extends JPanel implements Observer {
         t.setTime(t.getTime() + 1000);
     }
 
-
-
     //[TODO] - countdown
     private void countdown(Time t) {t.setTime(t.getTime()-1000);}
+
+
 
     public void whiteTimerDown() {
         countdown(whiteTime);
@@ -85,6 +85,11 @@ public class TimerPanel extends JPanel implements Observer {
         blackTimerStatusPanel.setVisible(true);
         whiteTimerStatusPanel.setVisible(false);
     }
+
+
+
+
+
 
     private void initialize() {
         whiteTimerDigitsLabel = new JLabel(whiteTime.toString());

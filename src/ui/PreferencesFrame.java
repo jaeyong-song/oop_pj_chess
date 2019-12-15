@@ -63,6 +63,13 @@ public class PreferencesFrame extends JFrame {
         loadPreferences();
     }
 
+    public JFormattedTextField gettimeLimitFormattedTextField() { return timeLimitFormattedTextField;}
+
+    //[FIXME]
+    public JPanel gettimeLimitPanel() {
+        return timeLimitPanel;
+    }
+
     private void loadPreferences() {
         Preferences preferences = Core.getPreferences();
         if (!preferences.isPreferencesComplete()) {
@@ -411,4 +418,6 @@ public class PreferencesFrame extends JFrame {
         JOptionPane.showMessageDialog(this, "Please set all necessary preferences. ", "Unfinished Preferences", JOptionPane.WARNING_MESSAGE);
     }
 
-}
+
+    }
+

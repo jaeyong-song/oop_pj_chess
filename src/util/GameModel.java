@@ -7,6 +7,7 @@ import ui.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Time;
 import java.util.Observable;
 
 public class GameModel extends Observable {
@@ -20,13 +21,28 @@ public class GameModel extends Observable {
     private Timer whiteTimer;
     private Timer blackTimer;
 
+
+
+
+
     public GameModel() {
         initialize();
     }
 
+    //[TODO] countdown이랑 stopwatch 시작
     private void initialize() {
+        switch(Core.getPreferences().getTimerMode()) {
+            case COUNTDOWN:
 
-        initializeTimers();
+
+                initializecountdownTimers();
+
+                break;
+            case STOPWATCH:
+                initializeTimers();
+                break;
+        }
+
         initializeUIComponents();
     }
 
@@ -89,12 +105,16 @@ public class GameModel extends Observable {
 
     private void initializecountdownTimers() {
         //TODO
+
+
+
         whiteTimer = new Timer( 1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 timerPanel.whiteTimerDown();
             }
         });
+
         blackTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -105,22 +125,30 @@ public class GameModel extends Observable {
 
     private void switchTimer(Move move) {
         /*
-        [FIXME] 각자 차례가 되면 다른 색깔 TIMER를 STOP하고 TIMER를 START한다.
+        [TODO] 각자 차례가 되면 다른 색깔 TIMER를 STOP하고 TIMER를 START한다. countdown인 경우 수정해줘야 한다.
          */
         if (move.getPiece().getColor() == Piece.Color.WHITE) {
+
             this.whiteTimer.stop();
+            if (Core.getPreferences().getTimerMode() == Preferences.TimerMode.COUNTDOWN) {
+                this.timerPanel.blackTime = Time.valueOf(Core.getPreferences().getTimeLimit()+":00:00");
+            }
+
             this.blackTimer.start();
         }
         else {
+            if (Core.getPreferences().getTimerMode() == Preferences.TimerMode.COUNTDOWN) {
+                this.timerPanel.whiteTime = Time.valueOf(Core.getPreferences().getTimeLimit()+":00:00");
+            }
             this.whiteTimer.start();
             this.blackTimer.stop();
         }
     }
 
     private void switchcountdownTimer(Move move) {
-        /*
-        [TODO] 각자 차례가 되면 다른 색깔 TIMER를 STOP하고 TIMER를 START한다.
-         */
+
+        //[TODO] 각자 차례가 되면 다른 색깔 TIMER를 STOP하고 TIMER를 START한다.
+
         if (move.getPiece().getColor() == Piece.Color.WHITE) {
             this.whiteTimer.stop();
             this.blackTimer.start();
@@ -156,4 +184,7 @@ public class GameModel extends Observable {
         return moveHistoryPanel;
     }
 
+
 }
+
+
