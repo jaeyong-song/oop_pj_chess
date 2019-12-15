@@ -50,7 +50,6 @@ public class ControlPanel extends JPanel implements Observer {
         saveButton.setEnabled(true);
         loadButton = new JButton("Load Game");
         loadButton.setEnabled(true);
-        //[FIXME]
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

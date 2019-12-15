@@ -26,7 +26,7 @@ public class MoveLogger {
     private static List<Move> moveRoundBuffer;
 
     //[FIXME] 각 piece에 대해 마지막 move만 가지고 있는 list
-    private static List<Move> lastmove;
+    public static List<Move> lastmove;
 
 
 
@@ -46,9 +46,10 @@ public class MoveLogger {
      */
     public static void addMove(Move move) {
         moveRoundBuffer.add(move);
+        saveLastMove(move);
         if (moveRoundBuffer.size() == 2) {
             //[FIXME]
-            savelastmove(move);
+
             moveHistory.add(new MoveRound(moveRoundBuffer.get(0), moveRoundBuffer.get(1)));
             moveRoundBuffer.clear();
 
@@ -57,7 +58,7 @@ public class MoveLogger {
     }
 
     //[FIXME] save
-    public static void savelastmove(Move move){
+    public static void saveLastMove(Move move){
         for(int i=0 ; i <lastmove.size(); i++) {
             if(move.getPiece() == lastmove.get(i).getPiece()) {
                 //나중에 execute move를 해주는 걸 고려해서 Destination만 update해줬습니다.
@@ -65,7 +66,7 @@ public class MoveLogger {
                         lastmove.get(i).getOriginFile(), lastmove.get(i).getOriginRank(),
                         move.getDestinationFile(), move.getDestinationRank());
                 lastmove.set(i, kkmove);
-                return;
+                break;
             }
         }
         lastmove.add(move);
