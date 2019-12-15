@@ -23,4 +23,15 @@ public class Pair {
     public void setFile(char file) {
         this.file = file;
     }
+
+    public boolean equals(Object other) {
+        if(this.getClass() == other.getClass()) {
+            Pair otherP = (Pair) other;
+            if(this.file == otherP.getFile()
+                    && this.rank == otherP.getRank()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

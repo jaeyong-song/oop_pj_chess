@@ -89,6 +89,12 @@ public class MoveValidator {
         * 4. all other cases => checkMate*/
 
         List<Pair> checkMakers = getAllCheckMakers();
+        for(Pair p: checkMakers) {
+            Piece maker = Board.getSquare(p.getFile(), p.getRank()).getCurrentPiece();
+            if(move.getPiece().getColor() != maker.getColor()) {
+                return true;
+            }
+        }
         Piece.Color mkrClr = Board.getSquare(checkMakers.get(0).getFile(), checkMakers.get(0).getRank()).getCurrentPiece().getColor();
 
         // 1. check if movement of king can overcome check
@@ -145,7 +151,62 @@ public class MoveValidator {
 
         // 3. if getAllcheckMakers.size() >= 2
         if(checkMakers.size() >= 2) {
-
+            // 1) check if capturing one of the checkMakers can make getAllCheckMakers().size == 0
+            for(int chkMakerNum = 0; chkMakerNum < checkMakers.size(); chkMakerNum++) {
+                for(int i = 0; i <= 8; i++) {
+                    for(char j = 'a'; j <= 'h'; j++) {
+                        Square sqr = Board.getSquare(j, i);
+                        Piece tmpP = sqr.getCurrentPiece();
+                        if(tmpP != null) {
+                            Move mv = new Move(tmpP, j, i, checkMakers.get(chkMakerNum).getFile(), checkMakers.get(chkMakerNum).getRank());
+                            if(validateMove(mv)) {
+                                Board.executeMove(mv);
+                                if(getAllCheckMakers().size() == 0) {
+                                    Board.undoMove(mv);
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // 2) get intersection Squares in the check paths of the checkMakers and check if one movement of some piece
+            //    can block that intersection Squares
+            Pair checkMaker = checkMakers.get(0);
+            Square checkMakerSqr = Board.getSquare(checkMaker.getFile(), checkMaker.getRank());
+            Piece piece = checkMakerSqr.getCurrentPiece();
+            Pair opponentKing = PieceSet.getOpponentKingPosition(piece.getColor());
+            List<Pair> intersectList = getPathPairs(Board.getSquare(checkMaker.getFile(), checkMaker.getRank()).getCurrentPiece(),
+                    checkMaker.getFile(), checkMaker.getRank(), opponentKing.getFile(), opponentKing.getRank());
+            for(int chkMakerNum = 1; chkMakerNum < checkMakers.size(); chkMakerNum++) {
+                checkMaker = checkMakers.get(chkMakerNum);
+                List<Pair> pathPairs = getPathPairs(Board.getSquare(checkMaker.getFile(), checkMaker.getRank()).getCurrentPiece(),
+                        checkMaker.getFile(), checkMaker.getRank(), opponentKing.getFile(), opponentKing.getRank());
+                intersectList = getIntersectPairs(intersectList, pathPairs);
+                if(intersectList.size() == 0) {
+                    return false;
+                } else {
+                    for(int pairN = 0; pairN < intersectList.size(); pairN++) {
+                        for(int i = 0; i <= 8; i++) {
+                            for(char j = 'a'; j <= 'h'; j++) {
+                                Square sqr = Board.getSquare(j, i);
+                                Piece tmpP = sqr.getCurrentPiece();
+                                if(tmpP != null) {
+                                    Pair p = intersectList.get(pairN);
+                                    Move mv = new Move(tmpP, j, i, p.getFile(), p.getRank());
+                                    if(validateMove(mv)) {
+                                        Board.executeMove(mv);
+                                        if(getAllCheckMakers().size() == 0) {
+                                            Board.undoMove(mv);
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // 4. all other cases
@@ -165,6 +226,19 @@ public class MoveValidator {
         for(int file = originFile + fileAdvance, rank = originRank + rankAdvance;
             file != destFile || rank != destRank; file += fileAdvance, rank += rankAdvance) {
             list.add(new Pair((char)file, rank));
+        }
+        return list;
+    }
+
+    // [FIXME] intersection pairs of PairList
+    private static List<Pair> getIntersectPairs(List<Pair> lst1, List<Pair> lst2) {
+        List<Pair> list = new LinkedList<Pair>();
+        for(Pair p1: lst1) {
+            for(Pair p2: lst2) {
+                if(p1.equals(p2)) {
+                    list.add(p1);
+                }
+            }
         }
         return list;
     }
