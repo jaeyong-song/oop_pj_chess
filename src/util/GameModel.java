@@ -9,6 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
 import java.util.Observable;
+import java.io.*;
+
+import javax.sound.sampled.*;
+
+
+
 
 public class GameModel extends Observable {
 
@@ -29,7 +35,7 @@ public class GameModel extends Observable {
         initialize();
     }
 
-    //[TODO] countdown이랑 stopwatch 시작
+
     private void initialize() {
         switch(Core.getPreferences().getTimerMode()) {
             case COUNTDOWN:
@@ -70,6 +76,8 @@ public class GameModel extends Observable {
             if (MoveValidator.isCheckMate(move)) {
                 stopTimer();
                 gameFrame.showCheckmateDialog();
+                Soundon("C:/Users/user/Downloads/gameover.wav");
+
             } else {
                 gameFrame.showCheckDialog();
             }
@@ -145,19 +153,32 @@ public class GameModel extends Observable {
         }
     }
 
-    private void switchcountdownTimer(Move move) {
 
-        //[TODO] 각자 차례가 되면 다른 색깔 TIMER를 STOP하고 TIMER를 START한다.
 
-        if (move.getPiece().getColor() == Piece.Color.WHITE) {
-            this.whiteTimer.stop();
-            this.blackTimer.start();
+
+
+    //[FIXME]
+    public void Soundon(String file) {
+        try {
+            File soundFile = new File(file);
+            final Clip clip = AudioSystem.getClip();
+            clip.addLineListener(new LineListener()
+            {
+                @Override
+                public void update(LineEvent event)
+                {
+                    if (event.getType() == LineEvent.Type.STOP)
+                        clip.close();
+                }
+            });
+            clip.open(AudioSystem.getAudioInputStream(soundFile));
+            clip.start();
         }
-        else {
-            this.whiteTimer.start();
-            this.blackTimer.stop();
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 
 
 
