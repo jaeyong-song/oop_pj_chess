@@ -76,8 +76,7 @@ public class GameModel extends Observable {
             if (MoveValidator.isCheckMate(move)) {
                 stopTimer();
                 gameFrame.showCheckmateDialog();
-                Soundon("C:/Users/user/Downloads/gameover.wav");
-
+                Soundon();
             } else {
                 gameFrame.showCheckDialog();
             }
@@ -158,9 +157,8 @@ public class GameModel extends Observable {
 
 
     //[FIXME]
-    public void Soundon(String file) {
+    public void Soundon() {
         try {
-            File soundFile = new File(file);
             final Clip clip = AudioSystem.getClip();
             clip.addLineListener(new LineListener()
             {
@@ -171,7 +169,7 @@ public class GameModel extends Observable {
                         clip.close();
                 }
             });
-            clip.open(AudioSystem.getAudioInputStream(soundFile));
+            clip.open(AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("gameover.wav")));
             clip.start();
         }
         catch (Exception e) {
