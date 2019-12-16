@@ -115,6 +115,7 @@ public class MoveLogger {
         if (move.getCapturedPiece()!=null){
             capturedPieces.add(move.getCapturedPiece());
             //System.out.println(capturedPieces);
+            //System.out.println(countPiece(capturedPieces, Piece.Type.PAWN));
         }
 
         if (countPiece(capturedPieces, Piece.Type.PAWN) == 16
