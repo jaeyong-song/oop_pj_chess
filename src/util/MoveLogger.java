@@ -1,5 +1,6 @@
 package util;
 
+import pieces.Pawn;
 import pieces.Piece;
 
 import java.io.*;
@@ -25,8 +26,10 @@ public class MoveLogger {
     private static List<MoveRound> moveHistory;
     private static List<Move> moveRoundBuffer;
 
-    //[FIXME] 각 piece에 대해 마지막 move만 가지고 있는 list
+    //[FIXME]
     public static List<Move> lastmove;
+    private static int i;
+    public static ArrayList<Piece> capturedPieces = new ArrayList<>();
 
 
 
@@ -47,6 +50,8 @@ public class MoveLogger {
     public static void addMove(Move move) {
         moveRoundBuffer.add(move);
         saveLastMove(move);
+        counti(move);
+        savecapturedPieces(move);
         if (moveRoundBuffer.size() == 2) {
             //[FIXME]
 
@@ -87,6 +92,48 @@ public class MoveLogger {
             a.printStackTrace();
             return new ArrayList<>();
         }
+    }
+
+    //[FIXME] 50 Draw
+    /*기물의 포획이 없고, 폰의 움직임이 없는 상태로 50수가 되면 Draw*/
+    private static void counti(Move move) {
+        if (move.getPiece().getType()== Piece.Type.PAWN | move.getCapturedPiece()!=null) {
+            i = 0;
+        }
+        else {
+            i++;
+        }
+        if (i==50) {
+            Core.getGameModel().gameFrame.show50DrawDialog();
+
+        }
+
+    }
+
+    //[FIXME] 잡힌 Pieces들 저장
+    private static void savecapturedPieces(Move move) {
+        if (move.getCapturedPiece()!=null){
+            capturedPieces.add(move.getCapturedPiece());
+            //System.out.println(capturedPieces);
+        }
+
+        if (countPiece(capturedPieces, Piece.Type.PAWN) == 16
+            && countPiece(capturedPieces, Piece.Type.ROOK) ==4
+            && countPiece(capturedPieces, Piece.Type.QUEEN) ==2) {
+            Core.getGameModel().gameFrame.showinsufficentpiecesDialog();
+        }
+
+
+    }
+
+    public static int countPiece(ArrayList<Piece> list, Piece.Type k) {
+        int cnt = 0;
+        for(int i = 0; i < list.size() ; i++) {
+            if (list.get(i).getType() == k) {
+                cnt++;
+            }
+        }
+        return cnt;
     }
 
 

@@ -24,6 +24,8 @@ public class Core {
         return coreInstance;
     }
 
+    public static GameModel getGameModel() {return gameModel;}
+
     public static void launch() {
         inGame = false;
         preferences = new Preferences();

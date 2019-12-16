@@ -56,6 +56,14 @@ public class GameFrame extends JFrame implements Observer{
         JOptionPane.showMessageDialog(this, "That's a Checkmate!", "Checkmate", JOptionPane.WARNING_MESSAGE);
     }
 
+    public void show50DrawDialog() {
+        JOptionPane.showMessageDialog(this, "That's a 50 move draw!", "Draw", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void showinsufficentpiecesDialog() {
+        JOptionPane.showMessageDialog(this, "That's a insufficient pieces draw!", "Draw", JOptionPane.WARNING_MESSAGE);
+    }
+
     private void loadInterface() {
         initializeMenuBar();
         initializePanels();

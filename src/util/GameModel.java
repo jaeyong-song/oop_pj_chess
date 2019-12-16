@@ -18,7 +18,7 @@ import javax.sound.sampled.*;
 
 public class GameModel extends Observable {
 
-    private GameFrame gameFrame;
+    public GameFrame gameFrame;
     private BoardPanel boardPanel;
     private TimerPanel timerPanel;
     private ControlPanel controlPanel;
@@ -38,7 +38,7 @@ public class GameModel extends Observable {
     }
 
 //[FIXME]
-    private void initialize() {
+    public void initialize() {
         switch(Core.getPreferences().getTimerMode()) {
             case COUNTDOWN:
 
@@ -89,6 +89,8 @@ public class GameModel extends Observable {
     public Piece queryPiece(char file, int rank) {
         return Board.getSquare(file, rank).getCurrentPiece();
     }
+
+
 
     private void initializeUIComponents() {
         boardPanel = new BoardPanel(this);
