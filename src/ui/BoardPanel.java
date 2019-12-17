@@ -51,6 +51,16 @@ public class BoardPanel extends JPanel implements Observer {
         originSquarePanel.repaint();
     }
 
+    public void undoMove(Move move) {
+        JPanel originSquarePanel = getSquarePanel(move.getDestinationFile(), move.getDestinationRank());
+        JPanel destinationSquarePanel = getSquarePanel(move.getOriginFile(), move.getOriginRank());
+        destinationSquarePanel.removeAll();
+        destinationSquarePanel.add(originSquarePanel.getComponent(0));
+        destinationSquarePanel.repaint();
+        originSquarePanel.removeAll();
+        originSquarePanel.repaint();
+    }
+
     public void preDrag(char originFile, int originRank, int dragX, int dragY) {
         Piece originPiece = gameModel.queryPiece(originFile, originRank);
         if (originPiece != null) {

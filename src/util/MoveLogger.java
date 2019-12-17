@@ -62,10 +62,31 @@ public class MoveLogger {
 
     }
 
+    // [FIXME] 로그 기록으로부터 한 step undo 하고 이를 반환함
+    public static Move delMove() {
+        if(moveRoundBuffer.size() != 0) {
+            Move deletedMv = moveRoundBuffer.remove(moveRoundBuffer.size()-1);
+            removeLastMove();
+            return deletedMv;
+        } else {
+            MoveRound mvR = moveHistory.remove(moveHistory.size() - 1);
+            Move deletedMv = mvR.blackMove;
+            mvR.blackMove = null;
+            moveRoundBuffer.add(mvR.whiteMove);
+            removeLastMove();
+            return deletedMv;
+        }
+    }
+
     //[FIXME] save
     public static void saveLastMove(Move move){
 
         lastmove.add(move);
+    }
+
+    //[FIXME]
+    public static void removeLastMove() {
+        lastmove.remove(lastmove.size() - 1);
     }
 
 

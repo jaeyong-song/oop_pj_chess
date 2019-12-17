@@ -19,7 +19,28 @@ public class MoveHistoryPanel extends JPanel implements Observer {
         this.gameModel = gameModel;
         initialize();
     }
+    public void printUndoMove(Move move) {
+        String newMoveEntry = "[UNDO]: ";
+        newMoveEntry += move.getPiece().getColor().toString() + " ";
+        newMoveEntry += move.getPiece().getType().toString() + ": ";
+        newMoveEntry += move.getOriginFile();
+        newMoveEntry += move.getOriginRank() + " - ";
+        newMoveEntry += move.getDestinationFile();
+        newMoveEntry += move.getDestinationRank() + " ";
+        if (move.getCapturedPiece() != null) {
+            newMoveEntry += "captures ";
+            newMoveEntry += move.getCapturedPiece().getType().toString();
+        }
+        newMoveEntry += "\n";
 
+        moveHistoryContent += newMoveEntry;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                moveHistoryTextArea.setText(moveHistoryContent);
+            }
+        });
+    }
     public void printMove(Move move) {
         String newMoveEntry = "";
         newMoveEntry += move.getPiece().getColor().toString() + " ";

@@ -27,6 +27,15 @@ public class MoveValidator {
         return validateMove(move, false);
     }
 
+    // TO invert current MoveColor
+    public static void invertCurrentMoveColor() {
+        if(currentMoveColor.equals(Piece.Color.WHITE)) {
+            currentMoveColor = Piece.Color.BLACK;
+        } else {
+            currentMoveColor = Piece.Color.WHITE;
+        }
+    }
+
     public static boolean validateMove(Move move, boolean ignoreColorCheck) {
         // check for out of bounds
         if (move.getDestinationFile() < 'a' || move.getDestinationFile() > 'h'

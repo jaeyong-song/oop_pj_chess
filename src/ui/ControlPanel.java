@@ -41,6 +41,13 @@ public class ControlPanel extends JPanel implements Observer {
 
         undoButton = new JButton("Request Undo");
         undoButton.setEnabled(true);
+        undoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // [TODO] 이 부분에 undo 관련 로직 들어가야함...
+                gameModel.undoMove();
+            }
+        });
         saveButton = new JButton("Save Game");
         //[FIXME]
         saveButton.addActionListener(new ActionListener() {

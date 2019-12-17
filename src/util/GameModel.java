@@ -66,6 +66,15 @@ public class GameModel extends Observable {
             //
         }
     }
+    // [TODO] undo를 위한 gameModel 메소드
+    public void undoMove() {
+        Move recoverMv = MoveLogger.delMove();
+        Board.undoMove(recoverMv);
+        moveHistoryPanel.printUndoMove(recoverMv);
+        boardPanel.undoMove(recoverMv);
+        switchTimer(recoverMv);
+        MoveValidator.invertCurrentMoveColor();
+    }
 
     public void executeMove(Move move) {
         MoveLogger.addMove(move);
